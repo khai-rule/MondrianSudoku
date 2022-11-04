@@ -1,0 +1,28 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FBFBF9;
+}
+
+.board {
+  height: 480px;
+  width: 480px;
+  background-image: url("https://i.ibb.co/F3NpFYC/Mondrian-Sudoku-02.jpg");
+  background-size:contain;
+}
+
+.board,.sudoku-section {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+/* to toggle */
+/* .sudoku-tile {
+  outline: solid 1px white;
+} */
+
+.sudoku-tile:hover {
+  background-color: white; opacity: 0.2;
+}
+

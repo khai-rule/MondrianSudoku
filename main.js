@@ -44,9 +44,8 @@ const $createNum = () => {
 $createNum();
 
 
-const $render = () => {
-    $(".sudoku-tile").text(game.insert);
-    console.log(1)
+const $render = (event) => {
+    $(event).text(game.insert);
 }
 
 
@@ -54,8 +53,9 @@ const $insert = () => {
   for (let i = 1; i <= 9; i++) {
     $(".numbers").eq(i-1).on("click", () => {
       game.insert = i;
-      
-      $render()
+      $(".sudoku-tile").on("click", (event) => {
+        $render(event.currentTarget)
+      })
     })
     }
   }

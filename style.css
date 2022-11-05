@@ -1,9 +1,20 @@
 body {
+  display: inline-block;
+  text-align: center;
+  background-color: #FBFBF9;
+  margin: auto;
+  position: absolute;
+  left: 35%;
+  top: 15%;
+}
+
+/* #game {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #FBFBF9;
-}
+  
+  height: 100vh;
+} */
 
 .board {
   height: 480px;

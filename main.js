@@ -2,8 +2,20 @@ import $ from "jquery";
 
 const game = {
   insert: 0,
-  outline: 0
+  outline: 0,
+  levels: ["Easy", "Medium", "Hard"]
 };
+
+
+//! Difficulty Level
+const $difficultyLevel = () => {
+  $(".difficulty-level").text("Levels:")
+  for (let i = 0; i < game.levels.length; i++) {
+    const $levels = $("<button>").text(game.levels[i])
+    $(".difficulty-level").append($levels)
+  }
+}
+$difficultyLevel()
 
 
 
@@ -19,8 +31,6 @@ const $createBoard = () => {
 }
 
 $createBoard();
-
-
 
 //! Hide/Remove Tiles Outline
 const $createOutline = () => {
@@ -38,6 +48,8 @@ const $createOutline = () => {
 }
 
 $createOutline()
+
+
 
 
 

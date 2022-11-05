@@ -18,9 +18,9 @@ body {
 }
 
 /* to toggle */
-/* .sudoku-tile {
+.sudoku-tile {
   outline: solid 1px white;
-} */
+}
 
 .sudoku-tile:hover {
   background-color: white; opacity: 0.2;

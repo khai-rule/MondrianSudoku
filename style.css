@@ -23,25 +23,25 @@ body {
   background-size: contain;
 }
 
-.board,.sudoku-section {
+/* .board,.sudoku-section {
   display: grid;
   position: relative;
   grid-template-columns: auto auto auto;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(3, 1fr);
 
-}
+} */
 
 /* to toggle */
-.sudoku-tile {
+/* .sudoku-tile {
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 28px;
-} 
+}  */
 
-.sudoku-tile:hover {
+.tiles:hover {
   background-color: white; opacity: 0.2;
   cursor: pointer;
 }
@@ -50,3 +50,17 @@ button:hover {
   cursor: pointer;
 }
 
+
+
+.board {
+  display: grid;
+  position: relative;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: repeat(9, 1fr);
+  grid-template-columns: repeat(9, 1fr);
+  font-size: 28px;
+} 
+
+.tile {
+  outline: solid 1px white;
+}

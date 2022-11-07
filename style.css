@@ -4,8 +4,8 @@ body {
   background-color: #FBFBF9;
   margin: auto;
   position: absolute;
-  left: 35%;
-  top: 15%;
+  left: 30%;
+  top: 10%;
 }
 
 /* #game {
@@ -43,13 +43,13 @@ body {
 
 .tiles:hover {
   background-color: white; opacity: 0.2;
-  cursor: pointer;
+  /* cursor: pointer; */
+  pointer-events: none;;
 }
 
 button:hover {
   cursor: pointer;
 }
-
 
 
 .board {
@@ -62,5 +62,10 @@ button:hover {
 } 
 
 .tile {
-  outline: solid 1px white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 28px;  
 }

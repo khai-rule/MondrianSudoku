@@ -5,8 +5,8 @@ const game = {
   outline: 0,
   levels: ["Easy", "Medium", "Hard"],
   numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  pages: ["start", "game", "pause", "details", "scoreboard"],
-  puzzle: 0
+  pages: "start",
+  puzzle: 0,
 };
 
 
@@ -27,19 +27,14 @@ const easy = [
 ];
 
 
-//! New Game Buttons
-const $newGame = () => {
-  const $new = $("<button>").attr("id", "new-game").text("New Game")
-  $("#control").append($new)
-}
-$newGame();
 
 
 //! Difficulty Level Buttons
 const $difficultyLevel = () => {
-  $(".difficulty-level").text("Levels:")
+  const $levelsTitle = $("<p>").text("Levels: ")
+  $(".difficulty-level").append($levelsTitle)
   for (let i = 0; i < game.levels.length; i++) {
-    const $levels = $("<button>").text(game.levels[i])
+    const $levels = $("<p>").text(game.levels[i])
     $(".difficulty-level").append($levels)
   }
 }
@@ -56,10 +51,18 @@ const $createBoard = () => {
 
 $createBoard();
 
+//! New Game Buttons
+const $newGame = () => {
+  const $new = $("<p>").attr("id", "new-game").text("New Game")
+  $("#control").append($new)
+}
+$newGame();
+
+
 //! Hide/Remove Tiles Outline Button
 const $createOutline = () => {
-  const $outline = $("<button>").attr("id", "outline").text("Grid")
-  $(".buttons").append($outline);
+  const $outline = $("<p>").attr("id", "outline").text("Grid").css("color", "grey")
+  $("#control").append($outline);
   $("#outline").on("click", () => {
     if (game.outline === 0) {
       game.outline = 1;
@@ -72,14 +75,27 @@ const $createOutline = () => {
 }
 $createOutline()
 
-
 //! Number Buttons
 const $createNum = () => {
   for (let i = 1; i < 10; i++) {
-    const $num = $("<button>").addClass("numbers").text(i);
-    $(".buttons").append($num);
+    const $num = $("<p>").addClass("numbers").text(i);
+    $("#numbers").append($num);
 }}
 $createNum();
+
+//! Append Number
+const $insert = () => {
+  for (let i = 1; i <= 9; i++) {
+    $(".numbers").eq(i-1).on("click", () => {
+      game.insert = i;
+      console.log(game.insert)
+      $(".tile").on("click", (event) => {
+        $render(event.currentTarget)
+      })  
+    })
+    }
+  }
+$insert()
 
 //! Generate Random Number for puzzle index
 const randomNum = () => {
@@ -88,10 +104,11 @@ const randomNum = () => {
   return game.puzzle
   }
 
-//! Clear Previous Board
+//! Reset Previous Board
 const $reset = () => {
   for (let i = 0; i < 81; i++) {
     $(`#${i+1}`).text("")
+    $(`#${i+1}`).css("pointer-events", "auto")
   }
 }
 
@@ -99,7 +116,7 @@ const $reset = () => {
 //! Solve Game Button
 const $solveGame = () => {
   const $solve = $("<button>").attr("id", "solve").text("Solve")
-  $("#control").append($solve)
+  $("body").append($solve)
 }
 $solveGame()
 
@@ -143,18 +160,6 @@ const $game = () => {
 }
 $game()
 
-//! Append Number
-const $insert = () => {
-  for (let i = 1; i <= 9; i++) {
-    $(".numbers").eq(i-1).on("click", () => {
-      game.insert = i;
-      $(".tile").on("click", (event) => {
-        $render(event.currentTarget)
-      })  
-    })
-    }
-  }
-$insert()
 
 //! Get Time and date
 let current = new Date();
@@ -178,7 +183,18 @@ const $winPopUp = (timer) => {
   $("#winBlock").append($winHeader).append($winSubHeader).append($winBody)
   const $addLine = $("<hr>")
   $("#winBlock").append($addLine)
-  // Records
+  // Exit
+  $("#win").on("click", () => {
+    resetTimer()
+    $reset()
+    $("#win").hide();
+  })
+}
+
+
+
+  //! Add Records
+  const $addRecords = () => {
   const $records = $("<div>").attr("id", "records")
   //? Date
   const $saveDate = $("<p>").text(`${current.toLocaleDateString()}`)
@@ -190,7 +206,6 @@ const $winPopUp = (timer) => {
   const $saveTimer = $("<h4>").attr("id", "saveTimer").text(`${timer}`)
   $($records).append($saveTimer)
   $("#winBlock").append($records)
-  // Exit
 }
 
 //TODO Remove
@@ -209,13 +224,16 @@ const $render = (event) => {
     // Pop Up
     const getTiming = $("#minute").text() + ":" + $("#second").text()
     pause()
-    $winPopUp(getTiming)
-    // alert(getTiming)
+    $("#win").show();
+    $winPopUp(getTiming);
+    
   }
   // Toggle grid
   if (game.outline === 1) {
+    $("#outline").css("color", "black")
     $(".tile").css("outline", "solid 1px white")
   } else {
+    $("#outline").css("color", "grey")
     $(".tile").css("outline", "none")
   }
 }

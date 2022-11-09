@@ -11,30 +11,23 @@ body {
   background-color: #FBFBF9;
   background-size: cover;
   width: 100%;
+  z-index: 1;
 }
 
 html, body {
-  margin: 0;
   padding: 0;
   display: block;
   margin: 0;
-  /* position: absolute; */
-  /* top: 40%;
-  left: 50%;
-  transform: translate(-50%, -40%)   */
 }
 
 #game {
-  display: flex;
-  flex-direction: column;
-  position: relative;
   align-items: center;
   justify-content: center;
-}
-
-#timer {
-  display: flex;
-  flex-direction: row;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)  
 }
 
 .board {
@@ -42,30 +35,17 @@ html, body {
   width: 480px;
   background-image: url("https://i.ibb.co/F3NpFYC/Mondrian-Sudoku-02.jpg");
   background-size: contain;
+  z-index: 1;
 }
-
-/* .board,.sudoku-section {
-  display: grid;
-  position: relative;
-  grid-template-columns: auto auto auto;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: repeat(3, 1fr);
-
-} */
-
-/* to toggle */
-/* .sudoku-tile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 28px;
-}  */
 
 .tiles:hover {
   background-color: white; opacity: 0.2;
   /* cursor: pointer; */
   pointer-events: none;;
+}
+
+.buttons {
+  z-index: 2;
 }
 
 button:hover {
@@ -112,8 +92,29 @@ button:hover {
 h2, h4, p {
   margin: 0;
   padding: 8px 0;
-  text-align: left;
+  font-family: 'Roboto', sans-serif;
 }
+
+p, div {
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+}
+
+#numbers {
+  display: flex;
+  flex-direction: row;
+  z-index: 2;
+  padding: 0 60px 0 0;
+}
+
+.numbers {
+    padding: 8px 0 0 8px;
+}
+
+.numbers:hover {
+  cursor: pointer;
+}
+
 
 #records {
   display: flex;
@@ -121,3 +122,45 @@ h2, h4, p {
   justify-content:space-between;
 }
 
+#top, #bottom, #control, #timer {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  margin: 0;
+  padding: 0;
+}
+
+#bottom {
+  margin-top: 8px;
+}
+
+#top {
+  margin-bottom: 8px;
+}
+
+#control {
+  padding: 0 8px 0 0;
+}
+
+#outline {
+  padding: 8px 0 0 16px;
+}
+
+#outline:hover, #new-game:hover, #pause:hover, #about:hover, .numbers:hover {
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+#solve {
+  background: transparent;
+  border: none !important;
+  font-size: 0;
+}
+
+.difficulty-level {
+  display: flex;
+  flex-direction: row;
+  z-index: 2;
+  gap: 8px;
+}

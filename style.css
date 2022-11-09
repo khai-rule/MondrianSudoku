@@ -1,20 +1,41 @@
-body {
-  display: inline-block;
-  text-align: center;
-  background-color: #FBFBF9;
-  margin: auto;
-  position: absolute;
-  left: 30%;
-  top: 10%;
+
+html {
+  height: 100%;
+  width: 100%;
+  display: table;
 }
 
-/* #game {
+body {
+  margin: 0 auto;
+  text-align: center;
+  background-color: #FBFBF9;
+  background-size: cover;
+  width: 100%;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  display: block;
+  margin: 0;
+  /* position: absolute; */
+  /* top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%)   */
+}
+
+#game {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  position: relative;
   align-items: center;
-  
-  height: 100vh;
-} */
+  justify-content: center;
+}
+
+#timer {
+  display: flex;
+  flex-direction: row;
+}
 
 .board {
   height: 480px;
@@ -69,3 +90,34 @@ button:hover {
   color: white;
   font-size: 28px;  
 }
+
+#win {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(0,0,0,.5);
+}
+
+#winBlock {
+  background-color: white;
+  display: block;
+  margin: 0;
+  padding: 24px 24px;
+  max-width: 280px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)  
+}
+
+h2, h4, p {
+  margin: 0;
+  padding: 8px 0;
+  text-align: left;
+}
+
+#records {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+}
+

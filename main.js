@@ -26,10 +26,8 @@ const easy = [
   ],
 ];
 
-// Random Number to generate puzzle
-// const randomNum = Math.floor(Math.random()*easy.length)
 
-//! New Game
+//! New Game Buttons
 const $newGame = () => {
   const $new = $("<button>").attr("id", "new-game").text("New Game")
   $("#control").append($new)
@@ -37,8 +35,7 @@ const $newGame = () => {
 $newGame();
 
 
-
-//! Difficulty Level
+//! Difficulty Level Buttons
 const $difficultyLevel = () => {
   $(".difficulty-level").text("Levels:")
   for (let i = 0; i < game.levels.length; i++) {
@@ -49,7 +46,7 @@ const $difficultyLevel = () => {
 $difficultyLevel()
 
 
-//! Board with unique grid
+//! Board with unique grid ID
 const $createBoard = () => {
   for (let i = 1; i <= 81; i++) {
     const $tiles = $("<div>").attr("id", `${i}`).addClass("tile");
@@ -59,7 +56,7 @@ const $createBoard = () => {
 
 $createBoard();
 
-// //! Hide/Remove Tiles Outline
+//! Hide/Remove Tiles Outline Button
 const $createOutline = () => {
   const $outline = $("<button>").attr("id", "outline").text("Grid")
   $(".buttons").append($outline);
@@ -73,8 +70,8 @@ const $createOutline = () => {
     }
   })
 }
-
 $createOutline()
+
 
 //! Number Buttons
 const $createNum = () => {
@@ -82,19 +79,16 @@ const $createNum = () => {
     const $num = $("<button>").addClass("numbers").text(i);
     $(".buttons").append($num);
 }}
-
 $createNum();
 
-//! Generate Random Number 
+//! Generate Random Number for puzzle index
 const randomNum = () => {
   const num = Math.floor(Math.random()*easy.length)
   game.puzzle = num
   return game.puzzle
   }
 
-
-
-//! Clear Previous
+//! Clear Previous Board
 const $reset = () => {
   for (let i = 0; i < 81; i++) {
     $(`#${i+1}`).text("")
@@ -102,18 +96,10 @@ const $reset = () => {
 }
 
 //TODO To hide
-//! Solve Game
+//! Solve Game Button
 const $solveGame = () => {
   const $solve = $("<button>").attr("id", "solve").text("Solve")
   $("#control").append($solve)
-  // $("#solve").on("click", () => {
-  //   const completeNum = easy[randomNum][1].split("");
-  //   for (let i = 0; i < 80; i++) {
-  //     const num = easy[randomNum][1].split("");
-  //     $(`#${i+1}`).text(num[i]);
-  //     $(`#${i+1}`).css("pointer-events", "none")
-  //   }
-  // })
 }
 $solveGame()
 
@@ -121,14 +107,22 @@ $solveGame()
 //! Generate Puzzle
 const $game = () => {
   $("#new-game").on("click", () => {
+    // Reset Timer
+    resetTimer()
+    // Start New Timer
+    start()
+    // Reset Board
     $reset()
+    // Generate Number for puzzle index
     randomNum()
     console.log(game.puzzle)
     game.puzzle = randomNum()
     console.log(`Puzzle ${game.puzzle}`)
+    // Insert Numbers from data
     const completeNum = easy[game.puzzle][0].split("");
     for (let i = 0; i < 81; i++) {
       const num = easy[game.puzzle][0].split("");
+      // Ignore (-)
       if (num[i] === "-") {
         continue
       }
@@ -137,17 +131,17 @@ const $game = () => {
     }
   })
   $("#solve").on("click", () => {
+    // Insert Numbers from data
     const completeNum = easy[game.puzzle][1].split("");
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 81; i++) {
       const num = easy[game.puzzle][1].split("");
       $(`#${i+1}`).text(num[i]);
       $(`#${i+1}`).css("pointer-events", "none")
+      $render()
     }
   })
 }
 $game()
-
-
 
 //! Append Number
 const $insert = () => {
@@ -162,18 +156,62 @@ const $insert = () => {
   }
 $insert()
 
+//! Get Time and date
+let current = new Date();
+console.log(current.toLocaleTimeString()); // time
+console.log(current.toLocaleDateString()); // date
+
+
+//! Win Pop up
+const $winPopUp = (timer) => {
+  // Darken Background
+  $("#win").css("background-color", "rgb(0,0,0,.5)").css("position", "absolute")
+  $("#win").css("z-index", "2")
+  // Create White Block
+  const $winBlock = $("<div>").attr("id", "winBlock")
+  $("#win").append($winBlock)
+  // Text
+  const $winHeader = $("<h2>").text("CONGRATULATION")
+  const $winSubHeader = $("<h4>").text(`You have completed
+  easy mode in ${timer} mins.`)
+  const $winBody = $("<p>").text("This is your fastest timing yet! Check out your progress below")
+  $("#winBlock").append($winHeader).append($winSubHeader).append($winBody)
+  const $addLine = $("<hr>")
+  $("#winBlock").append($addLine)
+  // Records
+  const $records = $("<div>").attr("id", "records")
+  //? Date
+  const $saveDate = $("<p>").text(`${current.toLocaleDateString()}`)
+  $($records).append($saveDate)
+  //? Time
+  const $saveTime = $("<p>").text(`${current.toLocaleTimeString()}`)
+  $($records).append($saveTime)
+  //? Timer
+  const $saveTimer = $("<h4>").attr("id", "saveTimer").text(`${timer}`)
+  $($records).append($saveTimer)
+  $("#winBlock").append($records)
+  // Exit
+}
+
+//TODO Remove
+// $winPopUp()
+
 //! Render
 const $render = (event) => {
   const $completed = []
   // Add selected number to tile
   $(event).text(game.insert);
-  // Compare
+  // Compare to win
   for (let i = 0; i < 81; i++) {
     const x = $(`#${i+1}`).text();
     $completed.push(x)
-    console.log($completed.join(""))
   } if ($completed.join("") === easy[game.puzzle][1]) {
-    console.log("You Win!") }
+    // Pop Up
+    const getTiming = $("#minute").text() + ":" + $("#second").text()
+    pause()
+    $winPopUp(getTiming)
+    // alert(getTiming)
+  }
   // Toggle grid
   if (game.outline === 1) {
     $(".tile").css("outline", "solid 1px white")
@@ -183,41 +221,34 @@ const $render = (event) => {
 }
 
 //! Timer
-
-"use strict";
-
-let hour = 0;
 let minute = 0;
 let second = 0;
 let millisecond = 0;
 
 let cron;
 
-$("#new-game").on("click", () => start());
-// document.form_main.pause.onclick = () => pause();
-// document.form_main.reset.onclick = () => reset();
-
-function start() {
+// Start Timer
+const start = () => {
   pause();
   cron = setInterval(() => { timer(); }, 10);
 }
 
-function pause() {
+// Pause Timer
+const pause = () => {
   clearInterval(cron);
 }
 
-function reset() {
-  hour = 0;
+// Reset Timer
+const resetTimer = () => {
   minute = 0;
   second = 0;
   millisecond = 0;
-  document.getElementById('hour').innerText = '00';
-  document.getElementById('minute').innerText = '00';
-  document.getElementById('second').innerText = '00';
-  document.getElementById('millisecond').innerText = '000';
+  $('#minute').text('00');
+  $('#second').text('00');
 }
 
-function timer() {
+// Timer
+const timer = () => {
   if ((millisecond += 10) == 1000) {
     millisecond = 0;
     second++;
@@ -226,18 +257,24 @@ function timer() {
     second = 0;
     minute++;
   }
-  if (minute == 60) {
-    minute = 0;
-    hour++;
-  }
-  document.getElementById('hour').innerText = returnData(hour);
-  document.getElementById('minute').innerText = returnData(minute);
-  document.getElementById('second').innerText = returnData(second);
-  document.getElementById('millisecond').innerText = returnData(millisecond);
+
+  $('#minute').text(returnData(minute));
+  $('#second').text(returnData(second))
 }
 
-function returnData(input) {
+// Timer Data
+const returnData = (input) => {
   return input >= 10 ? input : `0${input}`
 }
 
-//! Enter Highscore
+
+
+
+
+
+
+localStorage.setItem('myCat', 'hello');
+const cat = localStorage.getItem('myCat');
+console.log(cat)
+
+

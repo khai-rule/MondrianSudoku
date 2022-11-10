@@ -203,3 +203,8 @@ p, div {
   transform: translate(-50%, -50%);
   height: 420px; 
 }
+
+a {
+  text-decoration: none;
+  color: black;
+}

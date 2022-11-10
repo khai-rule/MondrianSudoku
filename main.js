@@ -11,22 +11,6 @@ const game = {
   pause: 0,
 };
 
-const artwork = [
-  [
-    "https://i.ibb.co/B6CyX8Z/Composition-II-in-Red-Blue-and-Yellow-1929.jpg",
-    "https://i.ibb.co/dKGtCH3/Composition-II-in-Red-Blue-and-Yellow-1929.png"
-  ],
-  [
-    "https://i.ibb.co/Z8Rstk2/Composition-C-1935.jpg",
-    "https://i.ibb.co/4Y0YTS9/Composition-C-1935.png"
-  ],
-  [
-    "https://i.ibb.co/3kkxSnc/Tableau-II-1922.jpg",
-    "https://i.ibb.co/YhPnjB5/Tableau-II-1922.png" 
-  ]
-]
-
-
 //! Easy Level
 const easy = [
   [
@@ -42,6 +26,23 @@ const easy = [
     "712583694639714258845269173521436987367928415498175326184697532253841769976352841"
   ],
 ];
+
+
+const artworkEasy = [
+  [
+    "https://i.ibb.co/B6CyX8Z/Composition-II-in-Red-Blue-and-Yellow-1929.jpg",
+    "https://i.ibb.co/Kr7HRc7/Composition-II-in-Red-Blue-and-Yellow-1929.png"
+  ],
+  [
+    "https://i.ibb.co/Z8Rstk2/Composition-C-1935.jpg",
+    "https://i.ibb.co/wSZq4Tx/Composition-C-1935.png"
+  ],
+  [
+    "https://i.ibb.co/3kkxSnc/Tableau-II-1922.jpg",
+    "https://i.ibb.co/jDdn7Mq/Tableau-II-1922.png" 
+  ]
+]
+
 
 //! Medium Level
 const medium = [
@@ -76,6 +77,14 @@ const hard = [
 ];
 
 
+const artworkHard = [
+  [
+    "https://i.ibb.co/TWyMFcG/New-York-City-I-1942-by-Piet-Mondrian.jpg",
+    "https://i.ibb.co/dKGtCH3/Composition-II-in-Red-Blue-and-Yellow-1929.png"
+  ]
+]
+
+
 //! Difficulty Level Buttons
 const $difficultyLevel = () => {
   const $levelsTitle = $("<p>").text("Levels: ")
@@ -103,7 +112,6 @@ const $createBoard = () => {
     $(".board").append($tiles)
   }
 }
-
 $createBoard();
 
 //! New Game Buttons
@@ -143,7 +151,8 @@ const $insert = () => {
   for (let i = 1; i <= 9; i++) {
     $(".numbers").eq(i-1).on("click", () => {
       game.insert = i;
-      console.log(game.insert)
+      $(".numbers").css("color", "grey").css("font-weight", "400")
+      $(".numbers").eq(i-1).css("color", "black").css("font-weight", "500")
       $(".tile").on("click", (event) => {
         $render(event.currentTarget)
       })  
@@ -171,6 +180,8 @@ const $pause = () => {
       // Change text to Resume
       $("#pause").text("Resume")
       game.pause = 1;
+      // Show indication time is paused
+      $("#timer").css("color", "grey")
       //? Resume
     } else {
       // Resume Timer
@@ -186,6 +197,8 @@ const $pause = () => {
       // Revert Text
       $("#pause").text("Pause")
       game.pause = 0
+      // Show indication time is resumed
+      $("#timer").css("color", "black")
     }
     
   })
@@ -207,12 +220,13 @@ const $label = () => {
       $("#pause").css("font-weight", "500")
       // Change text to Resume
       $("#pause").text("Resume")
+      // Show indication time is paused
+      $("#timer").css("color", "grey")
       game.pause = 1;
       $("#label-popup").css("background-color", "rgb(0,0,0,.5)").css("position", "absolute");
       $("#label-popup").css("z-index", "2");
-      $("#label-enlarge").attr("src", artwork[game.puzzle][1])
+      $("#label-enlarge").attr("src", artworkEasy[game.puzzle][1])
       $("#label-popup").show()
-      //? Resume
     }
   )
 }
@@ -223,6 +237,8 @@ const $closeLabel = () => {
   $("#label-popup").on("click", () => {
     // Resume Timer
     start();
+    // Show indication time is resumed
+    $("#timer").css("color", "black")
     // Show other Buttons
     $("#numbers").show();
     $("#outline").show();
@@ -281,9 +297,9 @@ const $game = () => {
     game.puzzle = randomNum()
     console.log(`Puzzle ${game.puzzle}`)
     // Change Artwork
-    $(".board").css("background-image", `url(${artwork[game.puzzle][0]})`)
+    $(".board").css("background-image", `url(${artworkEasy[game.puzzle][0]})`)
     // Change Label
-    $("#label").attr("src", artwork[game.puzzle][1])
+    $("#label").attr("src", artworkEasy[game.puzzle][1])
     // Insert Numbers from data
     const completeNum = easy[game.puzzle][0].split("");
     for (let i = 0; i < 81; i++) {

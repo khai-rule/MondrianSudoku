@@ -34,7 +34,7 @@ A preset of numbers representing the puzzle on sudoku (incomplete and completed)
 - Make the elements dynamic - size accordingly to viewport size
 - Optimise for mobile view
 
-# Bugs 
+# Known Bugs 
 - Win popup elements are created with every win, stacking on top of one another 
 - Numbers can be map on an empty board
 - Opening the label and closing it will start the timer even if the board is empty

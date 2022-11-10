@@ -4,13 +4,30 @@ const game = {
   insert: 0,
   outline: 0,
   levels: ["Easy", "Medium", "Hard"],
+  selectedLevel: "easy",
   numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9],
   pages: "start",
   puzzle: 0,
+  pause: 0,
 };
 
+const artwork = [
+  [
+    "https://i.ibb.co/B6CyX8Z/Composition-II-in-Red-Blue-and-Yellow-1929.jpg",
+    "https://i.ibb.co/dKGtCH3/Composition-II-in-Red-Blue-and-Yellow-1929.png"
+  ],
+  [
+    "https://i.ibb.co/Z8Rstk2/Composition-C-1935.jpg",
+    "https://i.ibb.co/4Y0YTS9/Composition-C-1935.png"
+  ],
+  [
+    "https://i.ibb.co/3kkxSnc/Tableau-II-1922.jpg",
+    "https://i.ibb.co/YhPnjB5/Tableau-II-1922.png" 
+  ]
+]
 
 
+//! Easy Level
 const easy = [
   [
     "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
@@ -26,7 +43,37 @@ const easy = [
   ],
 ];
 
+//! Medium Level
+const medium = [
+  [
+    "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
+    "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
+  ],
+  [
+    "--9-------4----6-758-31----15--4-36-------4-8----9-------75----3-------1--2--3--",
+    "619472583243985617587316924158247369926531478734698152891754236365829741472163895"
+  ],
+  [
+    "-1-5-------97-42----5----7-5---3---7-6--2-41---8--5---1-4------2-3-----9-7----8--",
+    "712583694639714258845269173521436987367928415498175326184697532253841769976352841"
+  ],
+];
 
+//! Hard Level
+const hard = [
+  [
+    "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
+    "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
+  ],
+  [
+    "--9-------4----6-758-31----15--4-36-------4-8----9-------75----3-------1--2--3--",
+    "619472583243985617587316924158247369926531478734698152891754236365829741472163895"
+  ],
+  [
+    "-1-5-------97-42----5----7-5---3---7-6--2-41---8--5---1-4------2-3-----9-7----8--",
+    "712583694639714258845269173521436987367928415498175326184697532253841769976352841"
+  ],
+];
 
 
 //! Difficulty Level Buttons
@@ -34,8 +81,16 @@ const $difficultyLevel = () => {
   const $levelsTitle = $("<p>").text("Levels: ")
   $(".difficulty-level").append($levelsTitle)
   for (let i = 0; i < game.levels.length; i++) {
-    const $levels = $("<p>").text(game.levels[i])
+    const $levels = $("<p>").addClass("levels").text(game.levels[i])
     $(".difficulty-level").append($levels)
+  }
+  // Show active level selection
+  if (game.selectedLevel === "easy") {
+    $(".levels").eq(0).css("color", "black").css("font-weight", "500");
+  } else if (game.selectedLevel === "medium") {
+    $(".levels").eq(1).css("color", "black").css("font-weight", "500");
+  } else {
+    $(".levels").eq(2).css("color", "black").css("font-weight", "500");
   }
 }
 $difficultyLevel()
@@ -97,6 +152,93 @@ const $insert = () => {
   }
 $insert()
 
+
+//! Pause 
+const $pause = () => {
+  $("#pause").on("click", () => {
+    //? Pause
+    if (game.pause === 0) {
+      // Pause Timer
+      pause();
+      // Hide other buttons
+      $("#numbers").hide();
+      $("#outline").hide();
+      $("#new-game").hide();
+      $(".difficulty-level").hide()
+      $(".tile").hide()
+      // Highlight button
+      $("#pause").css("font-weight", "500")
+      // Change text to Resume
+      $("#pause").text("Resume")
+      game.pause = 1;
+      //? Resume
+    } else {
+      // Resume Timer
+      start();
+      // Show other Buttons
+      $("#numbers").show();
+      $("#outline").show();
+      $("#new-game").show();
+      $(".difficulty-level").show()
+      $(".tile").show()
+      // Unhighlight button
+      $("#pause").css("font-weight", "400")
+      // Revert Text
+      $("#pause").text("Pause")
+      game.pause = 0
+    }
+    
+  })
+}
+$pause();
+
+//! Enlarge Label and Pause
+const $label = () => {
+  $("#label").on("click", () => {
+    //? Pause
+      pause();
+      // Hide other buttons
+      $("#numbers").hide();
+      $("#outline").hide();
+      $("#new-game").hide();
+      $(".difficulty-level").hide()
+      $(".tile").hide()
+      // Highlight button
+      $("#pause").css("font-weight", "500")
+      // Change text to Resume
+      $("#pause").text("Resume")
+      game.pause = 1;
+      $("#label-popup").css("background-color", "rgb(0,0,0,.5)").css("position", "absolute");
+      $("#label-popup").css("z-index", "2");
+      $("#label-enlarge").attr("src", artwork[game.puzzle][1])
+      $("#label-popup").show()
+      //? Resume
+    }
+  )
+}
+$label();
+
+//! Close Label and Resume
+const $closeLabel = () => {
+  $("#label-popup").on("click", () => {
+    // Resume Timer
+    start();
+    // Show other Buttons
+    $("#numbers").show();
+    $("#outline").show();
+    $("#new-game").show();
+    $(".difficulty-level").show()
+    $(".tile").show()
+    // Unhighlight button
+    $("#pause").css("font-weight", "400")
+    // Revert Text
+    $("#pause").text("Pause")
+    game.pause = 0
+    $("#label-popup").hide()
+  })
+}
+$closeLabel()
+
 //! Generate Random Number for puzzle index
 const randomNum = () => {
   const num = Math.floor(Math.random()*easy.length)
@@ -112,13 +254,14 @@ const $reset = () => {
   }
 }
 
-//TODO To hide
+//? Hidden at the top center of the page
 //! Solve Game Button
 const $solveGame = () => {
   const $solve = $("<button>").attr("id", "solve").text("Solve")
   $("body").append($solve)
 }
 $solveGame()
+
 
 
 //! Generate Puzzle
@@ -130,11 +273,17 @@ const $game = () => {
     start()
     // Reset Board
     $reset()
+    // Show Pause Button
+    $("#pause").css("color", "black")
     // Generate Number for puzzle index
     randomNum()
     console.log(game.puzzle)
     game.puzzle = randomNum()
     console.log(`Puzzle ${game.puzzle}`)
+    // Change Artwork
+    $(".board").css("background-image", `url(${artwork[game.puzzle][0]})`)
+    // Change Label
+    $("#label").attr("src", artwork[game.puzzle][1])
     // Insert Numbers from data
     const completeNum = easy[game.puzzle][0].split("");
     for (let i = 0; i < 81; i++) {
@@ -191,8 +340,6 @@ const $winPopUp = (timer) => {
   })
 }
 
-
-
   //! Add Records
   const $addRecords = () => {
   const $records = $("<div>").attr("id", "records")
@@ -208,8 +355,6 @@ const $winPopUp = (timer) => {
   $("#winBlock").append($records)
 }
 
-//TODO Remove
-// $winPopUp()
 
 //! Render
 const $render = (event) => {
@@ -276,7 +421,7 @@ const timer = () => {
     minute++;
   }
 
-  $('#minute').text(returnData(minute));
+  $('#minute').text(returnData(minute + ":"));
   $('#second').text(returnData(second))
 }
 
@@ -289,8 +434,7 @@ const returnData = (input) => {
 
 
 
-
-
+// TODO Local Storage
 localStorage.setItem('myCat', 'hello');
 const cat = localStorage.getItem('myCat');
 console.log(cat)

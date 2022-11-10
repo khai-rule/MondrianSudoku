@@ -4,7 +4,7 @@ const game = {
   insert: 0,
   outline: 0,
   levels: ["Easy", "Medium", "Hard"],
-  selectedLevel: "easy",
+  selectedLevel: "Easy",
   numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9],
   pages: "start",
   puzzle: 0,
@@ -43,47 +43,14 @@ const artworkEasy = [
   ]
 ]
 
-
-//! Medium Level
-const medium = [
-  [
-    "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
-    "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
-  ],
-  [
-    "--9-------4----6-758-31----15--4-36-------4-8----9-------75----3-------1--2--3--",
-    "619472583243985617587316924158247369926531478734698152891754236365829741472163895"
-  ],
-  [
-    "-1-5-------97-42----5----7-5---3---7-6--2-41---8--5---1-4------2-3-----9-7----8--",
-    "712583694639714258845269173521436987367928415498175326184697532253841769976352841"
-  ],
-];
-
 //! Hard Level
-const hard = [
-  [
-    "6------7------5-2------1---362----81--96-----71--9-4-5-2---651---78----345-------",
-    "685329174971485326234761859362574981549618732718293465823946517197852643456137298"
-  ],
-  [
-    "--9-------4----6-758-31----15--4-36-------4-8----9-------75----3-------1--2--3--",
-    "619472583243985617587316924158247369926531478734698152891754236365829741472163895"
-  ],
-  [
-    "-1-5-------97-42----5----7-5---3---7-6--2-41---8--5---1-4------2-3-----9-7----8--",
-    "712583694639714258845269173521436987367928415498175326184697532253841769976352841"
-  ],
-];
-
 
 const artworkHard = [
   [
     "https://i.ibb.co/TWyMFcG/New-York-City-I-1942-by-Piet-Mondrian.jpg",
-    "https://i.ibb.co/dKGtCH3/Composition-II-in-Red-Blue-and-Yellow-1929.png"
+    "https://i.ibb.co/HBkFxnt/New-York-City-I-1942.png"
   ]
 ]
-
 
 //! Difficulty Level Buttons
 const $difficultyLevel = () => {
@@ -93,17 +60,27 @@ const $difficultyLevel = () => {
     const $levels = $("<p>").addClass("levels").text(game.levels[i])
     $(".difficulty-level").append($levels)
   }
-  // Show active level selection
-  if (game.selectedLevel === "easy") {
-    $(".levels").eq(0).css("color", "black").css("font-weight", "500");
-  } else if (game.selectedLevel === "medium") {
-    $(".levels").eq(1).css("color", "black").css("font-weight", "500");
-  } else {
-    $(".levels").eq(2).css("color", "black").css("font-weight", "500");
-  }
 }
 $difficultyLevel()
 
+//! Show Selected Level
+const showSelectedLevel = () => {
+  // Show active level selection
+  if (game.selectedLevel === "Easy") {
+    $(".levels").eq(0).css("color", "black").css("font-weight", "500");
+    $(".levels").eq(1).css("color", "grey").css("font-weight", "400");
+    $(".levels").eq(2).css("color", "grey").css("font-weight", "400");
+    } else if (game.selectedLevel === "Medium") {
+    $(".levels").eq(1).css("color", "black").css("font-weight", "500");
+    $(".levels").eq(0).css("color", "grey").css("font-weight", "400");
+    $(".levels").eq(2).css("color", "grey").css("font-weight", "400");
+    } else {
+    $(".levels").eq(2).css("color", "black").css("font-weight", "500");
+    $(".levels").eq(1).css("color", "grey").css("font-weight", "400");
+    $(".levels").eq(0).css("color", "grey").css("font-weight", "400");
+  }
+}
+showSelectedLevel();
 
 //! Board with unique grid ID
 const $createBoard = () => {
@@ -120,7 +97,6 @@ const $newGame = () => {
   $("#control").append($new)
 }
 $newGame();
-
 
 //! Hide/Remove Tiles Outline Button
 const $createOutline = () => {
@@ -160,7 +136,6 @@ const $insert = () => {
     }
   }
 $insert()
-
 
 //! Pause 
 const $pause = () => {
@@ -279,7 +254,6 @@ const $solveGame = () => {
 $solveGame()
 
 
-
 //! Generate Puzzle
 const $game = () => {
   $("#new-game").on("click", () => {
@@ -293,9 +267,7 @@ const $game = () => {
     $("#pause").css("color", "black")
     // Generate Number for puzzle index
     randomNum()
-    console.log(game.puzzle)
     game.puzzle = randomNum()
-    console.log(`Puzzle ${game.puzzle}`)
     // Change Artwork
     $(".board").css("background-image", `url(${artworkEasy[game.puzzle][0]})`)
     // Change Label
@@ -325,11 +297,55 @@ const $game = () => {
 }
 $game()
 
+//! Select Level
+const $selectLevel = () => {
+  $(".levels").eq(2).on("click", () => {
+    game.selectedLevel = "Hard";
+    $(".board").css("background-image", `url(${artworkHard[0][0]})`);
+    $("#label").attr("src", `${artworkHard[0][1]}`);
+    showSelectedLevel();
+    // Reset Timer
+    resetTimer()
+    // pause New Timer
+    pause()
+    // Reset Board
+    $reset()
+    // Hide Pause Button
+    $("#pause").css("color", "#FBFBF9")
+  })
+  $(".levels").eq(1).on("click", () => {
+    game.selectedLevel = "Medium";
+    showSelectedLevel()
+    // Reset Timer
+    resetTimer()
+    // pause New Timer
+    pause()
+    // Reset Board
+    $reset()
+    // Hide Pause Button
+    $("#pause").css("color", "#FBFBF9")
+  })
+  $(".levels").eq(0).on("click", () => {
+    game.selectedLevel = "Easy";
+    $(".board").css("background-image", `url(${artworkEasy[0][0]})`)
+    $("#label").attr("src", `${artworkEasy[0][1]}`);
+    showSelectedLevel()
+    // Reset Timer
+    resetTimer()
+    // pause New Timer
+    pause()
+    // Reset Board
+    $reset()
+    // Hide Pause Button
+    $("#pause").css("color", "#FBFBF9")
+  })
+}
+$selectLevel();
 
 //! Get Time and date
 let current = new Date();
-console.log(current.toLocaleTimeString()); // time
-console.log(current.toLocaleDateString()); // date
+current.toLocaleTimeString(); // time
+current.toLocaleDateString(); // date
 
 
 //! Win Pop up
@@ -344,31 +360,28 @@ const $winPopUp = (timer) => {
   const $winHeader = $("<h2>").text("CONGRATULATION")
   const $winSubHeader = $("<h4>").text(`You have completed
   easy mode in ${timer} mins.`)
-  const $winBody = $("<p>").text("This is your fastest timing yet! Check out your progress below")
+  const $winBody = $("<p>").text("This is your fastest timing yet! Check out your progress below.")
   $("#winBlock").append($winHeader).append($winSubHeader).append($winBody)
   const $addLine = $("<hr>")
   $("#winBlock").append($addLine)
+// Records
+const $records = $("<div>").attr("id", "records")
+//? Date
+const $saveDate = $("<p>").text(`${current.toLocaleDateString()}`)
+$($records).append($saveDate)
+//? Time
+const $saveTime = $("<p>").text(`${current.toLocaleTimeString()}`)
+$($records).append($saveTime)
+//? Timer
+const $saveTimer = $("<h4>").attr("id", "saveTimer").text(`${timer}`)
+$($records).append($saveTimer)
+$("#winBlock").append($records)
   // Exit
   $("#win").on("click", () => {
     resetTimer()
     $reset()
     $("#win").hide();
   })
-}
-
-  //! Add Records
-  const $addRecords = () => {
-  const $records = $("<div>").attr("id", "records")
-  //? Date
-  const $saveDate = $("<p>").text(`${current.toLocaleDateString()}`)
-  $($records).append($saveDate)
-  //? Time
-  const $saveTime = $("<p>").text(`${current.toLocaleTimeString()}`)
-  $($records).append($saveTime)
-  //? Timer
-  const $saveTimer = $("<h4>").attr("id", "saveTimer").text(`${timer}`)
-  $($records).append($saveTimer)
-  $("#winBlock").append($records)
 }
 
 
@@ -383,7 +396,7 @@ const $render = (event) => {
     $completed.push(x)
   } if ($completed.join("") === easy[game.puzzle][1]) {
     // Pop Up
-    const getTiming = $("#minute").text() + ":" + $("#second").text()
+    const getTiming = $("#minute").text() + $("#second").text()
     pause()
     $("#win").show();
     $winPopUp(getTiming);
@@ -422,7 +435,7 @@ const resetTimer = () => {
   minute = 0;
   second = 0;
   millisecond = 0;
-  $('#minute').text('00');
+  $('#minute').text('00:');
   $('#second').text('00');
 }
 
@@ -445,14 +458,5 @@ const timer = () => {
 const returnData = (input) => {
   return input >= 10 ? input : `0${input}`
 }
-
-
-
-
-
-// TODO Local Storage
-localStorage.setItem('myCat', 'hello');
-const cat = localStorage.getItem('myCat');
-console.log(cat)
 
 

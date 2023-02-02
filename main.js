@@ -53,8 +53,6 @@ const artworkEasy = [
 	[tableau2, tableau2Text],
 ];
 
-console.table(artworkEasy);
-
 //! Hard Level
 
 const artworkHard = [[nyc1, nyc1Text]];
